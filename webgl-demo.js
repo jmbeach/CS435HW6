@@ -1,18 +1,11 @@
-//global to web-gl
 var canvas;
 var gl;
-var textureCoordAttribute;
-var perspectiveMatrix;
-//end global web-gl stuff
-
 function Project5() {
   var self = this;
   self.walls;
   self.floor;
 }
-
 var p5 = new Project5();
-
 function start() {
   canvas = document.getElementById("glcanvas");
   initWebGL(canvas); // Initialize the GL context
@@ -42,10 +35,8 @@ function start() {
     setInterval(drawScene, 15);
   }
 }
-
 function drawScene() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
-  perspectiveMatrix = makePerspective(45, 640.0 / 480.0, 0.1, 100.0);
   // move the camera
 
   p5.walls.draw();

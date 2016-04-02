@@ -2,24 +2,24 @@ function Cube(opts) {
   var self = this;
   self.hidden = opts.hidden;
   self.imageSrc = opts.imageSrc;
+  self.textureCoordAttribute;
   var initShaders = function() {
     var fragmentShader = getShader(gl, "shader-fs");
     var vertexShader = getShader(gl, "shader-vs");
-    shaderProgram = gl.createProgram();
-    gl.attachShader(shaderProgram, vertexShader);
-    gl.attachShader(shaderProgram, fragmentShader);
-    gl.linkProgram(shaderProgram);
-    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+    self.shaderProgram = gl.createProgram();
+    gl.attachShader(self.shaderProgram, vertexShader);
+    gl.attachShader(self.shaderProgram, fragmentShader);
+    gl.linkProgram(self.shaderProgram);
+    if (!gl.getProgramParameter(self.shaderProgram, gl.LINK_STATUS)) {
       alert("Unable to initialize the shader program.");
     }
-    gl.useProgram(shaderProgram);
-    vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
-    gl.enableVertexAttribArray(vertexPositionAttribute);
-    textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
-    gl.enableVertexAttribArray(textureCoordAttribute);
-    return shaderProgram;
+    gl.useProgram(self.shaderProgram);
+    self.vertexPositionAttribute = gl.getAttribLocation(self.shaderProgram, "aVertexPosition");
+    gl.enableVertexAttribArray(self.vertexPositionAttribute);
+    self.textureCoordAttribute = gl.getAttribLocation(self.shaderProgram, "aTextureCoord");
+    gl.enableVertexAttribArray(self.textureCoordAttribute);
   }
-  self.shaderProgram = initShaders();
+  initShaders();
   var isHidden = function(wall) {
     return self.hidden && self.hidden.indexOf(wall) > -1;
   }
@@ -33,8 +33,8 @@ function Cube(opts) {
   self.initBuffers = function() {
     gl.useProgram(self.shaderProgram)
     // Create a buffer for the cube's vertices.
-    cubeVerticesBuffer = gl.createBuffer();
-    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVerticesBuffer);
+    self.cubeVerticesBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, self.cubeVerticesBuffer);
     var emptyFace = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     var frontFace = [-1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0, -1.0, 1.0, 1.0];
     var backFace = [-1.0, -1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, -1.0, -1.0];
@@ -123,12 +123,12 @@ function Cube(opts) {
     // Draw the cube by binding the array buffer to the cube's vertices
     // array, setting attributes, and pushing it to GL.
 
-    gl.bindBuffer(gl.ARRAY_BUFFER, cubeVerticesBuffer);
+    gl.bindBuffer(gl.ARRAY_BUFFER, self.cubeVerticesBuffer);
     gl.vertexAttribPointer(self.vertexPositionAttribute, 3, gl.FLOAT, false, 0, 0);
     // Set the texture coordinates attribute for the vertices.
 
     gl.bindBuffer(gl.ARRAY_BUFFER, cubeVerticesTextureCoordBuffer);
-    gl.vertexAttribPointer(textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
+    gl.vertexAttribPointer(self.textureCoordAttribute, 2, gl.FLOAT, false, 0, 0);
 
     // Specify the texture to map onto the faces.
 

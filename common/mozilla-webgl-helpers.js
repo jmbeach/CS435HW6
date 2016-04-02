@@ -13,6 +13,7 @@ function mvTranslate(v,prog,mvMatrix) {
 }
 function setMatrixUniforms(shaderProgram,mvMatrix) {
   var pUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
+  var perspectiveMatrix = makePerspective(45, 640.0 / 480.0, 0.1, 100.0);
   gl.uniformMatrix4fv(pUniform, false, new Float32Array(perspectiveMatrix.flatten()));
   var mvUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
   gl.uniformMatrix4fv(mvUniform, false, new Float32Array(mvMatrix.flatten()));
