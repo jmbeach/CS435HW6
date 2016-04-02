@@ -2,6 +2,8 @@ function Cube(opts) {
   var self = this;
   self.hidden = opts.hidden;
   self.imageSrc = opts.imageSrc;
+  self.position = opts.position;
+  self.size = opts.size;
   self.textureCoordAttribute;
   var initShaders = function() {
     var fragmentShader = getShader(gl, "shader-fs");
@@ -25,7 +27,8 @@ function Cube(opts) {
   }
   var cubeVerticesIndexBuffer;
   var cubeVerticesTextureCoordBuffer;
-  var cubeRotation = 0.0;
+  var cubeRotation = opts.cubeRotation;
+  var rotateAxis = opts.rotateAxis;
   var lastCubeUpdateTime = 0;
   var cubeImage;
   var cubeTexture;
@@ -35,6 +38,7 @@ function Cube(opts) {
     // Create a buffer for the cube's vertices.
     self.cubeVerticesBuffer = gl.createBuffer();
     gl.bindBuffer(gl.ARRAY_BUFFER, self.cubeVerticesBuffer);
+    var mapSize = function(e) { return e*self.size; }
     var emptyFace = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
     var frontFace = [-1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0, -1.0, 1.0, 1.0];
     var backFace = [-1.0, -1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, -1.0, -1.0];
@@ -42,6 +46,14 @@ function Cube(opts) {
     var bottomFace = [-1.0, -1.0, -1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, -1.0, -1.0, 1.0];
     var rightFace = [1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0, -1.0, 1.0, ];
     var leftFace = [-1.0, -1.0, -1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, -1.0];
+    if (self.size) {
+      frontFace = frontFace.map(mapSize);
+      backFace = backFace.map(mapSize);
+      topFace = topFace.map(mapSize);
+      bottomFace = bottomFace.map(mapSize);
+      rightFace = rightFace.map(mapSize);
+      leftFace = leftFace.map(mapSize);
+    }
     var vertices = [];
     // optionally hide faces of cube
     if (isHidden("front")) {
@@ -119,7 +131,16 @@ function Cube(opts) {
   self.draw = function() {
     gl.useProgram(self.shaderProgram);
     mvMatrix = loadIdentity();
-    mvMatrix = mvTranslate([-0.0, 0.0, -2.5],self.shaderProgram,mvMatrix);
+    if (!self.position) {
+      mvMatrix = mvTranslate([-0.0, 0.0, -2.5],self.shaderProgram,mvMatrix);
+    }
+    else {
+      mvMatrix = mvTranslate(self.position,self.shaderProgram,mvMatrix);
+    }
+    if (cubeRotation) {
+      mvMatrix = mvRotate(cubeRotation,rotateAxis);
+      
+    }
     // Draw the cube by binding the array buffer to the cube's vertices
     // array, setting attributes, and pushing it to GL.
 

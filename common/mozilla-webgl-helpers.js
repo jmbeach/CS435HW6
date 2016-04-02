@@ -13,7 +13,7 @@ function mvTranslate(v,prog,mvMatrix) {
 }
 function setMatrixUniforms(shaderProgram,mvMatrix) {
   var pUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
-  var perspectiveMatrix = makePerspective(45, 640.0 / 480.0, 0.1, 100.0);
+  var perspectiveMatrix = makePerspective(60, 640.0 / 480.0, 0.1, 100.0);
   gl.uniformMatrix4fv(pUniform, false, new Float32Array(perspectiveMatrix.flatten()));
   var mvUniform = gl.getUniformLocation(shaderProgram, "uMVMatrix");
   gl.uniformMatrix4fv(mvUniform, false, new Float32Array(mvMatrix.flatten()));
@@ -21,7 +21,7 @@ function setMatrixUniforms(shaderProgram,mvMatrix) {
 function mvRotate(angle, v) {
   var inRadians = angle * Math.PI / 180.0;
   var m = Matrix.Rotation(inRadians, $V([v[0], v[1], v[2]])).ensure4x4();
-  multMatrix(m);
+  return multMatrix(m);
 }
 function getShader(gl, id) {
   var shaderScript = document.getElementById(id);
