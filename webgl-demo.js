@@ -25,12 +25,10 @@ function start() {
     p5.walls = new Cube({
       hidden: ["front", "top", "bottom"],
       imageSrc: "brick.jpg",
-      shaderProgram:initShaders()
     });
     p5.floor = new Cube({
       hidden:["front","back","top","left","right"],
       imageSrc: "wood.jpg",
-      shaderProgram:initShaders()
     });
     p5.tv = new Cube({
       imageSrc:"wood.jpg"
@@ -44,7 +42,6 @@ function start() {
     setInterval(drawScene, 15);
   }
 }
-
 
 function drawScene() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);

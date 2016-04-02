@@ -2,7 +2,24 @@ function Cube(opts) {
   var self = this;
   self.hidden = opts.hidden;
   self.imageSrc = opts.imageSrc;
-  self.shaderProgram = opts.shaderProgram;
+  var initShaders = function() {
+    var fragmentShader = getShader(gl, "shader-fs");
+    var vertexShader = getShader(gl, "shader-vs");
+    shaderProgram = gl.createProgram();
+    gl.attachShader(shaderProgram, vertexShader);
+    gl.attachShader(shaderProgram, fragmentShader);
+    gl.linkProgram(shaderProgram);
+    if (!gl.getProgramParameter(shaderProgram, gl.LINK_STATUS)) {
+      alert("Unable to initialize the shader program.");
+    }
+    gl.useProgram(shaderProgram);
+    vertexPositionAttribute = gl.getAttribLocation(shaderProgram, "aVertexPosition");
+    gl.enableVertexAttribArray(vertexPositionAttribute);
+    textureCoordAttribute = gl.getAttribLocation(shaderProgram, "aTextureCoord");
+    gl.enableVertexAttribArray(textureCoordAttribute);
+    return shaderProgram;
+  }
+  self.shaderProgram = initShaders();
   var isHidden = function(wall) {
     return self.hidden && self.hidden.indexOf(wall) > -1;
   }
