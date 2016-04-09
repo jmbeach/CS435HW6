@@ -194,8 +194,8 @@ function start() {
 			,imageSrc: "road.png"
 			,cubeRotation: 180
 			,rotateAxis: [0,0,1]
-			,size:1.09
-			,position:[0,0,-3]
+			,size:3.5
+			,position:[0,0,-8]
 		});
 		p6.dash.initBuffers();
 		p6.dash.initTextures();

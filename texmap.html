@@ -42,15 +42,28 @@
 
   <body onload="start()">
     <div>
-      <input type="button" id="play" value="Toggle Play" />
-      <input type="button" id="on" value="Toggle On/Off" />
-      <input type="button" id="next" value="Next" />
-      <input type="button" id="prev" value="Prev" />
+      <input type="button" id="forward" value="Move Forward" />
+      <input type="button" id="back" value="Move Back" />
     </div>
     <canvas id="glcanvas" width="640" height="480">
       Your browser doesn't appear to support the <code>&lt;canvas&gt;</code> element.
     </canvas>
   </body>
   <script>
+$("#forward").click(function() {
+	p6.road.position[2] +=.02
+});
+$("#back").click(function() {
+		p6.road.position[2] +=.02
+});
+
+document.onkeydown = function(e) {
+	if (e.which ==38) {
+		p6.road.position[2] +=.04
+	}
+	else if (e.which == 40) {
+		p6.road.position[2] -=.04
+	}
+}
   </script>
 </html>
