@@ -180,48 +180,34 @@ function start() {
     gl.clearDepth(1.0); // Clear everything
     gl.enable(gl.DEPTH_TEST); // Enable depth testing
     gl.depthFunc(gl.LEQUAL); // Near things obscure far things
+		gl.blendFunc(gl.SRC_ALPHA, gl.ONE_MINUS_SRC_ALPHA);
+		gl.enable(gl.BLEND);
 		p6.dash = new Cube({
 			hidden: ["top","bottom","left","right","back"]
 			,imageSrc: "dash.png"
-			,cubeRotation: 45
-			,rotateAxis: [1,0,0]
-		})
-    // p5.walls = new Cube({
-    //   hidden: ["front", "top", "bottom"],
-    //   imageSrc: "brick.jpg",
-    // });
-    // p5.floor = new Cube({
-    //   hidden:["front","back","top","left","right"],
-    //   imageSrc: "wood.jpg",
-    // });
-    // p5.tv = new Cube({
-    //   hidden:["front"],
-    //   imageSrc:"vinyl.jpg",
-    //   size:0.4,
-    //   position:[0,-0.5,-3]
-    // });
-    // p5.screen = new Cube({
-    //   hidden:["back","top","bottom","left","right"],
-    //   imageSrc:"vinyl.jpg",
-    //   size:0.4,
-    //   position:[0,-0.5,-3]
-    // })
+			,cubeRotation: 180
+			,rotateAxis: [0,0,1]
+			,size:1.09
+		});
+		p6.road = new Cube({
+			hidden: ["top","bottom","left","right","back"]
+			,imageSrc: "road.png"
+			,cubeRotation: 180
+			,rotateAxis: [0,0,1]
+			,size:1.09
+			,position:[0,0,-3]
+		});
 		p6.dash.initBuffers();
 		p6.dash.initTextures();
-    // p5.walls.initBuffers();
-    // p5.walls.initTextures();
-    // p5.floor.initBuffers();
-    // p5.tv.initBuffers();
-    // p5.tv.initTextures();
-    // p5.floor.initTextures();
-    // p5.screen.initBuffers();
-    // p5.screen.initTextures();
-    setInterval(drawScene, 15);
+		p6.road.initBuffers();
+		p6.road.initTextures();
+		setInterval(drawScene, 15);
   }
 }
 function drawScene() {
   gl.clear(gl.COLOR_BUFFER_BIT | gl.DEPTH_BUFFER_BIT);
   // move the camera
   p6.dash.draw();
+	p6.road.draw();
   var currentTime = (new Date).getTime();
 }

@@ -16,6 +16,9 @@
 
       void main(void) {
         gl_FragColor = texture2D(uSampler, vec2(vTextureCoord.s, vTextureCoord.t));
+				if(gl_FragColor.r == 0.0) {
+					discard;
+				}
       }
     </script>
 
