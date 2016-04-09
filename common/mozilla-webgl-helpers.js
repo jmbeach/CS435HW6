@@ -1,17 +1,17 @@
 
 function loadIdentity() {
-  var mvMatrix = Matrix.I(4);
+  mvMatrix = Matrix.I(4);
   return mvMatrix;
 }
-function multMatrix(m,mvMatrix) {
+function multMatrix(m) {
   mvMatrix = mvMatrix.x(m);
-  return mvMatrix;
+	return mvMatrix;
 }
-function mvTranslate(v,prog,mvMatrix) {
+function mvTranslate(v,prog) {
   gl.useProgram(prog);
   return multMatrix(Matrix.Translation($V([v[0], v[1], v[2]])).ensure4x4(),mvMatrix);
 }
-function setMatrixUniforms(shaderProgram,mvMatrix) {
+function setMatrixUniforms(shaderProgram) {
   var pUniform = gl.getUniformLocation(shaderProgram, "uPMatrix");
   var perspectiveMatrix = makePerspective(60, 640.0 / 480.0, 0.1, 100.0);
   gl.uniformMatrix4fv(pUniform, false, new Float32Array(perspectiveMatrix.flatten()));
